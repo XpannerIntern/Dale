@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>         // sprintf 사용을 위해 추가
+#include "Wifi_Module.h"
 
 #define TWI_FREQ 100000UL
 #define TWBR_VAL ((F_CPU / TWI_FREQ - 16) / 2)
@@ -135,6 +136,7 @@ ISR(INT1_vect) {
 	if (isMonitoring == 1){
 		intrusionCount++;
 		updateFlag = 1; // 화면 갱신 예약
+		Send_Intrusion();
 	}
 }
 
@@ -196,6 +198,8 @@ int main(void) {
 	lcd_set_cursor(0, 1);
 	lcd_print("Starting...");
 	_delay_ms(2000); // 2초간 대기
+	
+	start_wifi();
 	
 	display_status();
 
